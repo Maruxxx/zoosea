@@ -15,7 +15,12 @@ export default function App() {
   const [active, setActive] = React.useState(false)
 
   const [loadedFonts] = useFonts({
-    "beachday": require('./assets/fonts/beachday.ttf')
+    "AsapBlack": require('./assets/fonts/Asap-Black.ttf'),
+    "AsapBold": require('./assets/fonts/Asap-Bold.ttf'),
+    "AsapLight": require('./assets/fonts/Asap-Light.ttf'),
+    "AsapMedium": require('./assets/fonts/Asap-Medium.ttf'),
+    "AsapRegular": require('./assets/fonts/Asap-Regular.ttf'),
+    "AsapSemiBold": require('./assets/fonts/Asap-SemiBold.ttf')
   })
 
   const onLayoutRootView = useCallback(async () => {
@@ -44,7 +49,7 @@ export default function App() {
       onPressOut={() => {setActive(false)}}
       style={[styles.button, active ? styles.activeButton : styles.notActiveButton]}
       >
-        <Text style={styles.text}>Next</Text>
+        <Text style={styles.text}>NEXT</Text>
       </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
@@ -54,7 +59,7 @@ export default function App() {
 const styles = StyleSheet.create({
   
   text: {
-    fontFamily: "beachday", 
+    fontFamily: "AsapBlack", 
     fontSize: 30, 
     color:"#064ba8",
   },
