@@ -1,18 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback } from 'react';
-import { Text, View } from 'react-native';
 import { useFonts } from "expo-font"
 import * as SplashScreen from "expo-splash-screen"
-import { LinearGradient } from 'expo-linear-gradient';
-import { Image } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native';
+import { ImageBackground, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+const background = require('./assets/background.jpg')
+
+
+import IonIcon from "@expo/vector-icons/Ionicons"
+
+import { Home, Profile, Rewards, Settings, PrivacyPolicy, TermsOfService, CommunityGuidelines, Support, About } from './src/screens';
 
 
 export default function App() {
 
-  const [active, setActive] = React.useState(false)
 
   const [loadedFonts] = useFonts({
     "AsapBlack": require('./assets/fonts/Asap-Black.ttf'),
@@ -33,53 +37,85 @@ export default function App() {
     return null;
   }
 
+  const Tab = createBottomTabNavigator();
+  const SettingsStack = createNativeStackNavigator();
+
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}  onLayout={onLayoutRootView}>
-      <LinearGradient
-        colors={['#255bd5', '#357fec', '#409dfd']}
-        start={{ x: 0.5, y: 1}}
-        end={{x: 0, y: 0}}
-        style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0}}
-      />
-      <Image source={require('./assets/bubbles.png')} alt="" style={{position: "absolute", top: 0, left: 0, width: 200, height: 200}}/>
-      <Image source={require('./assets/bubbles2.png')} alt="" style={{position: "absolute", bottom: 0, right: 0}}/>
-      <TouchableOpacity 
-      activeOpacity={1}
-      onPressIn={() => {setActive(true)}} 
-      onPressOut={() => {setActive(false)}}
-      style={[styles.button, active ? styles.activeButton : styles.notActiveButton]}
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            position: "absolute",
+            bottom: 40,
+            marginHorizontal: 40,
+            paddingHorizontal: 10,
+            backgroundColor: "rgba(255, 255, 255, 0.15)",
+            elevation: 0,
+            borderRadius: 30,
+            height: 65,
+            borderTopWidth:0
+          },
+          headerShown: false,
+        })}
       >
-        <Text style={styles.text}>NEXT</Text>
-      </TouchableOpacity>
+        <Tab.Screen 
+        name="Home" 
+        component={Home}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              {focused ? <IonIcon name='home' size={24} color="white"/> : <IonIcon name='home-outline' size={24} color="white"/>}
+            </View>
+          )
+        }}
+        />
+        <Tab.Screen 
+        name="Rewards" 
+        component={Rewards}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              {focused ? <IonIcon name='gift' size={24} color="white"/> : <IonIcon name='gift-outline' size={24} color="white"/>}
+            </View>
+          )
+        }}
+        />
+        <Tab.Screen 
+        name="SettingsScreen" 
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              {focused ? <IonIcon name='settings' size={24} color="white"/> : <IonIcon name='settings-outline' size={24} color="white"/>}
+            </View>
+          )
+        }}
+        >
+          {() => (
+            <SettingsStack.Navigator>
+              <SettingsStack.Screen name='Settings' component={Settings} options={{ headerShown: false, animation: 'none'}}/>
+              <SettingsStack.Screen name='PrivacyPolicy' component={PrivacyPolicy} options={{ headerShown: false, animation: 'none'}}/>
+              <SettingsStack.Screen name='TermsOfService' component={TermsOfService} options={{ headerShown: false, animation: 'none'}}/>
+              <SettingsStack.Screen name='CommunityGuidelines' component={CommunityGuidelines} options={{ headerShown: false, animation: 'none'}}/>
+              <SettingsStack.Screen name='Support' component={Support} options={{ headerShown: false, animation: 'none'}}/>
+              <SettingsStack.Screen name='About' component={About} options={{ headerShown: false, animation: 'none'}}/>
+            </SettingsStack.Navigator>
+          )}
+        </Tab.Screen>
+        <Tab.Screen 
+        name="Profile" 
+        component={Profile}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              {focused ? <IonIcon name='person' size={24} color="white"/> : <IonIcon name='person-outline' size={24} color="white"/>}
+            </View>
+          )
+        }}
+        />
+      </Tab.Navigator>
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  
-  text: {
-    fontFamily: "AsapBlack", 
-    fontSize: 30, 
-    color:"#064ba8",
-  },
-  
-  button : {
-    position: "absolute", 
-    left: 50, 
-    bottom: 150,
-    backgroundColor: "white",
-    paddingHorizontal: 40,
-    paddingVertical: 10,
-    borderRadius: 8,
-    borderBottomColor: "#064ba8",
-  },
-
-  activeButton: {
-    borderBottomWidth: 0
-  },
-
-  notActiveButton: {
-    borderBottomWidth: 5
-  }
-})
