@@ -1,19 +1,24 @@
-import { View, Text, Modal, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native'
 import React from 'react'
-import { LinearGradient } from 'expo-linear-gradient';
 import Button from '../components/Button';
+import IonIcon from "@expo/vector-icons/Ionicons"
 
 
-const background = require('../../assets/background.jpg')
+const background = require('../../assets/media/bg/background.jpg')
 
 const Settings = ({navigation}) => {
   
+
+
   return (
     <View style={styles.container}>
       <ImageBackground source={background} resizeMode="cover" style={{flex: 1, width: "100%", display: 'flex', justifyContent:'center', alignItems: 'center'}}>
         
       <View style={styles.settingsWrapper}>
           <Text style={styles.routeName}>Settings</Text>
+          <TouchableOpacity onPress={() => {navigation.navigate('Menu', { currentRoute: 'Settings'})}} style={{position: 'absolute', left: 0}}>
+              <IonIcon name="chevron-back-outline" color='white' size={26}/>
+            </TouchableOpacity>
           <View style={{
             width: '100%',
             height: 5,

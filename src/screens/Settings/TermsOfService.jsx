@@ -34,7 +34,7 @@ const TermsOfService = ({navigation}) => {
             marginVertical: 20,
             borderRadius: 30,
           }}></View>
-          <ScrollView style={{marginVertical: 10, flexGrow: 0.85}}>
+          <ScrollView style={{marginVertical: 10}}>
             <Text style={styles.text}>
             <Text style={{fontFamily: 'AsapSemiBold', fontSize: 14}}>Thank you for using our application! By accessing and using our application, you agree to be bound by the following terms and conditions:</Text>{"\n"} {"\n"}
 

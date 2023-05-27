@@ -1,17 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import IonIcon from "@expo/vector-icons/Ionicons"
 import { TouchableOpacity } from 'react-native'
-import { ScrollView } from 'react-native'
-import { TextInput } from 'react-native'
+
+const zooseaLogo = require('../../../assets/media/icons/zoosea-logo.png')
 
 const Support = ({navigation}) => {
-  
-  const [subject, setSubject] = React.useState('')
-  const [description, setDescription] = React.useState('')
-  
-  
+
+
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -41,7 +39,23 @@ const Support = ({navigation}) => {
               borderRadius: 30,
             }}>
           </View>
+          
+
+            <View style={styles.profileCard}>
+                <View style={{width: '80%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 10}}>
+                  <IonIcon name="mail" size={35} color='white'/>
+                  <Text style={{fontFamily: 'AsapBold', color: 'white', fontSize: 26}}>Email us!</Text>
+                </View>
+                <Text style={{fontFamily: 'AsapLight', color: 'white', fontSize: 18}}>contact.zoosea@gmail.com</Text>
+            </View>
         </View>
+
+
+          <View>
+            <Image source={zooseaLogo} resizeMode='contain' style={{width: 120, bottom: 25}}/>
+          </View>
+            
+
       </View>
   )
 }
@@ -82,5 +96,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     gap: 15
-  }
+  },
+
+  profileCard: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 30,
+    backgroundColor: "rgba(255, 255, 255, 0.20)",
+    width: '100%',
+    borderRadius: 10,
+    marginBottom: 10,
+  },
 })

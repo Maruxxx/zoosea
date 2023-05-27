@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1089705311110",
+    "project_id": "zoosea-e1932",
+    "storage_bucket": "zoosea-e1932.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089705311110:android:e1479618513de176d1ca07",
+        "android_client_info": {
+          "package_name": "com.marux.zoosea"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089705311110-1m9rb4703nkrd92of9pjioevdnhuaefm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marux.zoosea",
+            "certificate_hash": "ddfeee7597f2209739671aa7e8037e50e8bb1311"
+          }
+        },
+        {
+          "client_id": "1089705311110-f92u2cmb57miqifm3k42idm8grpmm4ta.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdfzhs4rWuX2bu3peHkfhoOz8TQ0-HTSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089705311110-1au87f9s85khti2uaikohja06ilu017m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

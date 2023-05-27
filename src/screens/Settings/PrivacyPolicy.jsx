@@ -34,7 +34,7 @@ const PrivacyPolicy = ({navigation}) => {
             marginVertical: 20,
             borderRadius: 30,
           }}></View>
-          <ScrollView style={{marginVertical: 10, flexGrow: 0.85}}>
+          <ScrollView style={{marginVertical: 10}}>
             <Text style={styles.text}>
             <Text style={{fontFamily: 'AsapBold', fontSize: 16}}>Thank you for using Zoosea!</Text> {"\n"}  Here is our short privacy policy regarding ad rewards and gifts earning:
 

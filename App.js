@@ -1,23 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useFonts } from "expo-font"
 import * as SplashScreen from "expo-splash-screen"
-import { ImageBackground, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const background = require('./assets/background.jpg')
+
+import auth from '@react-native-firebase/auth';
 
 
-import IonIcon from "@expo/vector-icons/Ionicons"
-
-import { Home, Profile, Rewards, Settings, PrivacyPolicy, TermsOfService, CommunityGuidelines, Support, About } from './src/screens';
-
+import { Home, Profile, Rewards, Settings, PrivacyPolicy, TermsOfService, CommunityGuidelines, Support, About, Menu, Login, Onboarding, RewardDetail, SuccessReward, Earn } from './src/screens';
 
 export default function App() {
 
 
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+    
   const [loadedFonts] = useFonts({
     "AsapBlack": require('./assets/fonts/Asap-Black.ttf'),
     "AsapBold": require('./assets/fonts/Asap-Bold.ttf'),
@@ -37,84 +48,45 @@ export default function App() {
     return null;
   }
 
-  const Tab = createBottomTabNavigator();
-  const SettingsStack = createNativeStackNavigator();
+  if (initializing) return null;
+
+
+  const Stack = createNativeStackNavigator();
 
 
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarShowLabel: false,
-          tabBarStyle: {
-            position: "absolute",
-            bottom: 40,
-            marginHorizontal: 40,
-            paddingHorizontal: 10,
-            backgroundColor: "rgba(255, 255, 255, 0.15)",
-            elevation: 0,
-            borderRadius: 30,
-            height: 65,
-            borderTopWidth:0
-          },
-          headerShown: false,
-        })}
-      >
-        <Tab.Screen 
-        name="Home" 
-        component={Home}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View>
-              {focused ? <IonIcon name='home' size={24} color="white"/> : <IonIcon name='home-outline' size={24} color="white"/>}
-            </View>
+      <Stack.Navigator screenOptions={{
+        headerShown: false,
+        animation:'none'
+      }}>
+        {
+          !user ? (
+            <>
+            <Stack.Screen name='Onboarding' component={Onboarding} options={{animation: 'slide_from_right'}}/>
+            </>
+          ) : (
+            <>
+            <Stack.Screen name='Home' component={Home} initialParams={{ user: user}} />
+            <Stack.Screen name='Menu' component={Menu} initialParams={{ user: user}}/>
+            <Stack.Screen name='Earn' component={Earn} initialParams={{ user: user}}/>
+            <Stack.Screen name='Rewards' component={Rewards} />
+            <Stack.Screen name='RewardDetail' component={RewardDetail}/>
+            <Stack.Screen name='SuccessReward' component={SuccessReward}/>
+            <Stack.Screen name='Profile' component={Profile} />
+            <Stack.Screen name='Settings' component={Settings} />
+            <Stack.Screen name='PrivacyPolicy' component={PrivacyPolicy} />
+            <Stack.Screen name='TermsOfService' component={TermsOfService} />
+            <Stack.Screen name='CommunityGuidelines' component={CommunityGuidelines} />
+            <Stack.Screen name='Support' component={Support} />
+            <Stack.Screen name='About' component={About} />
+            <Stack.Screen name='Onboarding' component={Onboarding} options={{animation: 'slide_from_right'}}/>
+            </>
           )
-        }}
-        />
-        <Tab.Screen 
-        name="Rewards" 
-        component={Rewards}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View>
-              {focused ? <IonIcon name='gift' size={24} color="white"/> : <IonIcon name='gift-outline' size={24} color="white"/>}
-            </View>
-          )
-        }}
-        />
-        <Tab.Screen 
-        name="SettingsScreen" 
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View>
-              {focused ? <IonIcon name='settings' size={24} color="white"/> : <IonIcon name='settings-outline' size={24} color="white"/>}
-            </View>
-          )
-        }}
-        >
-          {() => (
-            <SettingsStack.Navigator>
-              <SettingsStack.Screen name='Settings' component={Settings} options={{ headerShown: false, animation: 'none'}}/>
-              <SettingsStack.Screen name='PrivacyPolicy' component={PrivacyPolicy} options={{ headerShown: false, animation: 'none'}}/>
-              <SettingsStack.Screen name='TermsOfService' component={TermsOfService} options={{ headerShown: false, animation: 'none'}}/>
-              <SettingsStack.Screen name='CommunityGuidelines' component={CommunityGuidelines} options={{ headerShown: false, animation: 'none'}}/>
-              <SettingsStack.Screen name='Support' component={Support} options={{ headerShown: false, animation: 'none'}}/>
-              <SettingsStack.Screen name='About' component={About} options={{ headerShown: false, animation: 'none'}}/>
-            </SettingsStack.Navigator>
-          )}
-        </Tab.Screen>
-        <Tab.Screen 
-        name="Profile" 
-        component={Profile}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View>
-              {focused ? <IonIcon name='person' size={24} color="white"/> : <IonIcon name='person-outline' size={24} color="white"/>}
-            </View>
-          )
-        }}
-        />
-      </Tab.Navigator>
+        }
+        <Stack.Screen navigationKey={user ? 'user' : 'guest'} name="Login" component={Login} />
+      </Stack.Navigator>
+      
       <StatusBar style="auto" />
     </NavigationContainer>
   );

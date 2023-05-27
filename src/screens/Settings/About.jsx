@@ -34,7 +34,7 @@ const About = ({navigation}) => {
             marginVertical: 20,
             borderRadius: 30,
           }}></View>
-          <ScrollView style={{marginVertical: 10, flexGrow: 0.85}}>
+          <ScrollView style={{marginVertical: 10}}>
             <Text style={styles.text}>
             <Text style={{fontFamily: 'AsapBold', fontSize: 24}}>Zoosea!</Text>{"\n"}Our app is designed to allow you to earn rewards and gifts by watching advertisements from our trusted third-party advertisers.
 
