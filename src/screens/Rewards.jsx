@@ -174,7 +174,13 @@ customized shirts or mugs.</Text>
                 <View style={styles.iconHolder}>
                   <Image source={shirt} resizeMode='contain' style={{ width: 90}}/>
                 </View>
-                <TouchableOpacity activeOpacity={.6} style={styles.bubbleCount}>
+                <TouchableOpacity onPress={() => {
+                  if(bubblesCollected >= 2500) {
+                    navigation.navigate('RewardDetail')
+                  } else {
+                    insufficiantPopUp();
+                  }
+                }} activeOpacity={.6} style={styles.bubbleCount}>
                   <Image source={whiteBubble} style={{height: 20, width: 20}}/>
                   <Text style={{fontFamily: 'AsapBold', fontSize: 18, color: 'white'}}>2500</Text>
                 </TouchableOpacity>

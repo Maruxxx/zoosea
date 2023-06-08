@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const CommunityGuidelines = () => {
+const LatestNewsArticle = () => {
   return (
     <View>
-      <Text>CommunityGuidelines</Text>
+      <Text>LatestNewsArticle</Text>
     </View>
   )
 }
 
-export default CommunityGuidelines
+export default LatestNewsArticle
 
 const styles = StyleSheet.create({})

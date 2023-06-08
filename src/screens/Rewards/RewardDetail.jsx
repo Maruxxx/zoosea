@@ -20,6 +20,8 @@ const RewardDetail = ({ navigation, route}) => {
       <ImageBackground source={background} resizeMode="cover" style={styles.bgImage}>
 
       <View style={styles.headerWrapper}>
+
+        <View style={{width: '80%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center'}}>
             <Text style={styles.routeName}>{title}</Text>
 
             <TouchableOpacity onPress={() => {navigation.goBack()}} style={{position: 'absolute', left: 0}}>
@@ -33,7 +35,7 @@ const RewardDetail = ({ navigation, route}) => {
               marginVertical: 20,
               borderRadius: 30,
             }}></View>
-
+        </View>
             
         <View style={styles.packs}>
 
@@ -58,10 +60,10 @@ const RewardDetail = ({ navigation, route}) => {
               <TouchableOpacity activeOpacity={1} onPress={() => {setActivePack('1'); if(bubblesCollected >= 2000) {setIsRedeemable(true)} else {setIsRedeemable(false)}}}>
                 <Image source={image} resizeMode='cover' style={styles.pack}/>
                 <View style={styles.priceWrapper}>
-                  <Text style={{fontFamily: 'AsapRegular', fontSize: 16, color: 'white'}}>5$</Text>
+                  <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white'}}>5$</Text>
                   <View style={styles.price}>
-                    <Image source={whiteBubble} style={{height: 18, width: 18}}/>
-                    <Text style={{fontFamily: 'AsapBold', fontSize: 14, color: 'white'}}>2000</Text>
+                    <Image source={whiteBubble} style={{height: 14, width: 14}}/>
+                    <Text style={{fontFamily: 'AsapBold', fontSize: 12, color: 'white'}}>4000</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -71,10 +73,10 @@ const RewardDetail = ({ navigation, route}) => {
               <TouchableOpacity activeOpacity={1} onPress={() => {setActivePack('2'); if(bubblesCollected >= 10000) {setIsRedeemable(true)} else {setIsRedeemable(false)}}}>
                 <Image source={image} resizeMode='cover' style={styles.pack}/>
                 <View style={styles.priceWrapper}>
-                  <Text style={{fontFamily: 'AsapRegular', fontSize: 16, color: 'white'}}>25$</Text>
+                  <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white'}}>25$</Text>
                   <View style={styles.price}>
-                    <Image source={whiteBubble} style={{height: 18, width: 18}}/>
-                    <Text style={{fontFamily: 'AsapBold', fontSize: 14, color: 'white'}}>10000</Text>
+                    <Image source={whiteBubble} style={{height: 14, width: 14}}/>
+                    <Text style={{fontFamily: 'AsapBold', fontSize: 12, color: 'white'}}>10000</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -84,10 +86,10 @@ const RewardDetail = ({ navigation, route}) => {
               <TouchableOpacity activeOpacity={1} onPress={() => {setActivePack('3'); if(bubblesCollected >= 18500) {setIsRedeemable(true)} else {setIsRedeemable(false)}}}>
                 <Image source={image} resizeMode='cover' style={styles.pack}/>
                 <View style={styles.priceWrapper}>
-                  <Text style={{fontFamily: 'AsapRegular', fontSize: 16, color: 'white'}}>50$</Text>
+                  <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white'}}>50$</Text>
                   <View style={styles.price}>
-                    <Image source={whiteBubble} style={{height: 18, width: 18}}/>
-                    <Text style={{fontFamily: 'AsapBold', fontSize: 14, color: 'white'}}>18500</Text>
+                    <Image source={whiteBubble} style={{height: 14, width: 14}}/>
+                    <Text style={{fontFamily: 'AsapBold', fontSize: 12, color: 'white'}}>18500</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -97,10 +99,10 @@ const RewardDetail = ({ navigation, route}) => {
               <TouchableOpacity activeOpacity={1} onPress={() => {setActivePack('4'); if(bubblesCollected >= 30000) {setIsRedeemable(true)} else {setIsRedeemable(false)}}}>
                 <Image source={image} resizeMode='cover' style={styles.pack}/>
                 <View style={styles.priceWrapper}>
-                  <Text style={{fontFamily: 'AsapRegular', fontSize: 16, color: 'white'}}>100$</Text>
+                  <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white'}}>100$</Text>
                   <View style={styles.price}>
-                    <Image source={whiteBubble} style={{height: 18, width: 18}}/>
-                    <Text style={{fontFamily: 'AsapBold', fontSize: 14, color: 'white'}}>30000</Text>
+                    <Image source={whiteBubble} style={{height: 14, width: 14}}/>
+                    <Text style={{fontFamily: 'AsapBold', fontSize: 12, color: 'white'}}>30000</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -155,7 +157,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '80%',
+      width: '100%',
       marginVertical: 50,
     },
 
@@ -179,8 +181,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row'
   },
-  
-  
 
   packs: {
     display: 'flex',
@@ -193,8 +193,8 @@ const styles = StyleSheet.create({
 
   pack: {
     borderRadius: 5,
-    height: 55,
-    width: 125
+    height: 60,
+    width: 140
   },
 
   packsWrapper: {
@@ -204,7 +204,8 @@ const styles = StyleSheet.create({
     marginVertical: 25,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 15
+    gap: 15,
+    width: '100%'
   },
 
   fiveDollarWrapper: {

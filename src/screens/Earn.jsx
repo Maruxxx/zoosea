@@ -12,16 +12,22 @@ import { getDoc, doc, updateDoc } from "firebase/firestore/lite";
 
 import * as Linking from 'expo-linking';
 import ActiveAdSquare from '../components/ActiveAdSquare';
+import ActiveLink from '../components/ActiveLink';
+import UnactiveLink from '../components/UnactiveLink';
+import UnactiveAdSquare from '../components/UnactiveAdSquare';
+
 
 
 const background = require('../../assets/media/bg/background.jpg')
 const sanara = require('../../assets/media/icons/sanara.png')
 const whiteBubble = require('../../assets/media/icons/white-bubble.png')
 const btnBg = require('../../assets/media/bg/btn.jpg')
-const web = require('../../assets/media/bg/webb.jpg')
 
 const octopus = require('../../assets/media/icons/fish1.png')
+const notOctopus = require('../../assets/media/icons/fish1unactive.png')
+
 const goldenFish = require('../../assets/media/icons/fish2.png')
+const notGoldenFish = require('../../assets/media/icons/fish2unactive.png')
 
 
 const exe = require('../../assets/media/links/exe.png')
@@ -47,7 +53,11 @@ const Earn = ({navigation, route}) => {
 
   const [igClaimed, setIgClaimed] = useState();
   const [tkClaimed, setTkClaimed] = useState();
-  const [fbClaimed, setFbClaimed] = useState()
+  const [fbClaimed, setFbClaimed] = useState();
+
+
+  const [Link1, setLink1] = useState(false);
+  const [Link2, setLink2] = useState(true);
 
 
   const adUnitId = __DEV__ ? TestIds.REWARDED : 'ca-app-pub-3224909038709130/7223029991';
@@ -143,6 +153,7 @@ const Earn = ({navigation, route}) => {
     }
     bounces={false} showsVerticalScrollIndicator={false} style={styles.container}>
       <ImageBackground blurRadius={2} source={background} resizeMode="cover" style={styles.bgImage}>
+
         
         <View style={styles.header}>
           <View style={styles.bubbleCountWrapper}>
@@ -152,37 +163,13 @@ const Earn = ({navigation, route}) => {
               
               </Text>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('Menu', { currentRoute: 'Home', user: user})}>
+          <TouchableOpacity onPress={() => navigation.navigate('Menu', { currentRoute: 'Earn', user: user})}>
             <IonIcon name="menu-outline" color='white' size={30}/>
           </TouchableOpacity>
         </View>
 
         <View style={{position: 'absolute', top: 0}}>
           <Image source={sanara} resizeMode='contain' style={{width: 106, height: 173, }}/>
-        </View>
-
-
-        <View style={styles.VisitAndLearn}>
-
-          <View style={styles.__text}>
-            <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Visit & Learn</Text>
-            <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Discover the Wonders of the Oceanic Realm.</Text>
-          </View>
-          
-          <View style={styles.webBanner}>
-            <TouchableOpacity style={{flex: 1, borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}}>
-              <ImageBackground source={web} resizeMode='contain' imageStyle={{borderRadius: 10}} style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start', width: '100%'}}>
-                <View style={{width: '50%', height: '90%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 10, marginLeft: 20}}>
-                  <Image source={zoosealogo} resizeMode='contain' style={{width: 100, height: 22}} />
-                  <Text style={{fontFamily: 'AsapRegular', fontSize: 8, color: 'white', width: 100}}>Dive into Our Website and Explore the Fascinating Ocean and Fishes World!</Text>
-                  <TouchableOpacity style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '50%', height: 25, backgroundColor: '#0037AF', borderBottomColor: 'white', borderBottomWidth: 2, borderRadius: 5}}>
-                    <Text style={{fontFamily: 'AsapBold', color: 'white', fontSize: 10}}>Browse</Text>
-                  </TouchableOpacity>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
-
         </View>
 
         <View style={styles.WatchAndEarn}>
@@ -195,7 +182,7 @@ const Earn = ({navigation, route}) => {
           
           <View style={styles.adBannerCards}>
             <TouchableOpacity style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}} onPress={() => {console.log(new Date(Date.now() + 60*60*5000))}}>
-              <ActiveAdSquare name="Octopus" image={octopus}/>
+              <UnactiveAdSquare time="1 Hour" image={notOctopus}/>
             </TouchableOpacity>
             <TouchableOpacity style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}}>
               <ActiveAdSquare name="Goldfish" image={goldenFish}/>
@@ -214,27 +201,43 @@ const Earn = ({navigation, route}) => {
           </View>
           
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 15, marginBottom: 10}}>
-            <TouchableOpacity onPress={() => navigation.navigate('Rewards')} activeOpacity={0.8} style={styles.button}>
-              <Image resizeMode='contain' source={exe} style={{position: 'absolute', zIndex: 10, width: 70}} />
-              <ImageBackground resizeMode='cover' source={btnBg} style={{width: '100%', height: '100%', borderRadius: 10}} />
-            </TouchableOpacity>
             
-            <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-              <Image resizeMode='contain' source={exe} style={{position: 'absolute', zIndex: 10, width: 70}} />
-              <ImageBackground resizeMode='cover' source={btnBg} style={{flex: 1, width: '100%', height: '100%'}} />
-            </TouchableOpacity>
+            {
+                Link1 ? (
+                    <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                        <ActiveLink image={exe} number="1"/>
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                        <UnactiveLink time="24 Hrs" />
+                    </TouchableOpacity>
+                )
+            }
+            
+            {
+                Link2 ? (
+                    <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                        <ActiveLink image={exe} number="2"/>
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                        <UnactiveLink time="24 Hrs" />
+                    </TouchableOpacity>
+                )
+            }
+
           </View>
           
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 15}}>
+
             <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-              <Image resizeMode='contain' source={shrink} style={{position: 'absolute', zIndex: 10, width: 80}}/>
-              <ImageBackground resizeMode='cover' source={btnBg} style={{width: '100%', height: '100%', borderRadius: 10}} />
+                <ActiveLink image={shrink} number="1"/>
             </TouchableOpacity>
             
             <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-              <Image resizeMode='contain' source={shrink} style={{position: 'absolute', zIndex: 10, width: 80}}/>
-              <ImageBackground resizeMode='cover' source={btnBg} style={{width: '100%', height: '100%', borderRadius: 10}} />
+                <ActiveLink image={shrink} number="2"/>
             </TouchableOpacity>
+
           </View>
 
         </View>
@@ -247,7 +250,7 @@ const Earn = ({navigation, route}) => {
           </View>
           
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, marginBottom: 10}}>
-            <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+            <TouchableOpacity onPress={() => {setCpxActive(true)}} activeOpacity={0.8} style={styles.button}>
               <Image resizeMode='contain' source={cpx} style={{position: 'absolute', zIndex: 10, width: 90}} />
               <ImageBackground resizeMode='cover' source={btnBg} style={{width: '100%', height: '100%', borderRadius: 10}} />
             </TouchableOpacity>
@@ -357,6 +360,8 @@ const Earn = ({navigation, route}) => {
 
       </ImageBackground>
     </ScrollView>
+  
+
   )
 }
 

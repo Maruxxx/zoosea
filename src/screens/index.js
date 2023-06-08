@@ -8,7 +8,6 @@ import Settings from "./Settings";
 
 import PrivacyPolicy from "./Settings/PrivacyPolicy"
 import TermsOfService from "./Settings/TermsOfService"
-import CommunityGuidelines from "./Settings/CommunityGuidelines"
 import Support from "./Settings/Support"
 import About from "./Settings/About"
 import Menu from './Settings/Menu'
@@ -27,7 +26,6 @@ export {
     Settings,
     PrivacyPolicy,
     TermsOfService,
-    CommunityGuidelines,
     Support,
     About,
     Menu,

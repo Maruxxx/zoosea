@@ -1,5 +1,5 @@
-import { View, Text, Image, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native'
-import React, {useCallback, useEffect,useState} from 'react'
+import { View, Text, Image, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, RefreshControl, FlatList } from 'react-native'
+import React, {useCallback, useEffect,useRef,useState} from 'react'
 
 import IonIcon from "@expo/vector-icons/Ionicons";
 
@@ -10,12 +10,15 @@ const whiteBubble = require('../../assets/media/icons/white-bubble.png')
 
 import { db } from '../../firebase';
 import { getDoc, doc, updateDoc } from "firebase/firestore/lite"; 
+import GeneralArticle from '../components/GeneralArticle';
+import RulesArticle from '../components/RulesArticle';
 
 
 const Home = ({navigation, route}) => {
 
   const [bubblesCollected, setBubblesCollected] = useState(0)
-  const { user } = route.params
+  const { user, latestNews, rules, general } = route.params
+
 
   useEffect( () => {
     fetchData();
@@ -28,9 +31,6 @@ const Home = ({navigation, route}) => {
         const docSnap = await getDoc(docRef)
         if(docSnap.exists()) {
           setBubblesCollected(docSnap.data().bubbles)
-          setFbClaimed(docSnap.data().facebook)
-          setTkClaimed(docSnap.data().tiktok)
-          setIgClaimed(docSnap.data().instagram)
         }
       } catch (e) {
         console.log(e)
@@ -49,6 +49,11 @@ const Home = ({navigation, route}) => {
       setRefreshing(false);
     }, 2000);
   }, []);
+
+
+  const renderItem = ({item}) => (
+    <RulesArticle key={item.id} title={item.title} desc={item.desc} image={item.image} url={item.url} />
+    )
 
   return (
     <ScrollView 
@@ -74,6 +79,38 @@ const Home = ({navigation, route}) => {
         <View style={{position: 'absolute', top: 0}}>
           <Image source={sanara} resizeMode='contain' style={{width: 106, height: 173, }}/>
         </View>
+
+
+
+
+
+        <View style={styles.__text}>
+            <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Oceanic Wisdom</Text>
+            <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Earn bubbles by watching daily rewarded ads.</Text>
+          </View>
+
+
+              <FlatList 
+              contentContainerStyle={{marginHorizontal: 20}}
+              data={rules}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+              horizontal={true}
+              />
+
+
+
+        <View style={styles.__text}>
+            <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Splash Of Knowledge</Text>
+            <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Earn bubbles by watching daily rewarded ads.</Text>
+          </View>
+
+
+        {
+          general.map((item) => (
+            <GeneralArticle key={item.id} title={item.title} desc={item.desc} image={item.image} url={item.url}/>
+          ))
+        }
 
 
       </ImageBackground>
@@ -109,4 +146,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 10
   },
+
+  __text: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 30,
+    gap: 5
+  },
+
 })
