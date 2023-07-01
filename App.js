@@ -1,3 +1,5 @@
+const {readFile} = require('react-native-fs')
+
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect} from 'react';
 import { useFonts } from "expo-font"
@@ -6,10 +8,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
+const latestnewsJSON = require('./assets/data/latest-news.json')
+const rulesJSON = require('./assets/data/rules.json')
+const generalJSON = require('./assets/data/general.json')
+
+
 import auth from '@react-native-firebase/auth';
 
 
-import { Home, Profile, Rewards, Settings, PrivacyPolicy, TermsOfService, Support, About, Menu, Login, Onboarding, RewardDetail, SuccessReward, Earn } from './src/screens';
+import { Home, Profile, Rewards, Settings, PrivacyPolicy, TermsOfService, Support, About, Menu, Login, Onboarding, RewardDetail, SuccessReward, Earn, ConfirmReward } from './src/screens';
 import axios from 'axios';
 
 SplashScreen.preventAutoHideAsync();
@@ -35,12 +42,14 @@ export default function App() {
   }
 
   async function fetchArticles() {
-    axios.get('https://zoosea-scrapper.onrender.com/latest-news')
-        .then(response => {
-          const data = response.data
-          setLatestNews(data)
-        })
-        .catch(err => console.log(err))
+    readFile(latestNews, 'utf-8', function(err, data) {
+      try {
+        data = JSON.parse(data)
+        console.log(data)
+      } catch(err) {
+        console.log(err)
+      }
+    })
       axios.get('https://zoosea-scrapper.onrender.com/rules')
         .then(response => {
           const data = response.data
@@ -130,6 +139,7 @@ export default function App() {
             <Stack.Screen name='Rewards' component={Rewards} />
             <Stack.Screen name='RewardDetail' component={RewardDetail}/>
             <Stack.Screen name='SuccessReward' component={SuccessReward}/>
+            <Stack.Screen name='ConfirmReward' component={ConfirmReward}/>
             <Stack.Screen name='Profile' component={Profile} />
             <Stack.Screen name='Settings' component={Settings} />
             <Stack.Screen name='PrivacyPolicy' component={PrivacyPolicy} />

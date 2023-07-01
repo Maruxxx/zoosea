@@ -10,7 +10,7 @@ const UnactiveAdSquare = ({time, image}) => {
         
 
         <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginVertical: 10}}>
-          <Text style={{color: 'white', fontFamily: 'AsapRegular', fontSize: 10, marginBottom: -2}}>Ad available at</Text>
+          <Text style={{color: 'white', fontFamily: 'AsapRegular', fontSize: 10, marginBottom: -2}}>Ad available in</Text>
           <Text style={{color: 'white', fontFamily: 'AsapBold', fontSize: 18}}>{time}</Text>
         </View>
 

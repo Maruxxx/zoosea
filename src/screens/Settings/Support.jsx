@@ -46,14 +46,9 @@ const Support = ({navigation}) => {
                   <IonIcon name="mail" size={35} color='white'/>
                   <Text style={{fontFamily: 'AsapBold', color: 'white', fontSize: 26}}>Email us!</Text>
                 </View>
-                <Text style={{fontFamily: 'AsapLight', color: 'white', fontSize: 18}}>contact.zoosea@gmail.com</Text>
+                <Text style={{fontFamily: 'AsapLight', color: 'white', fontSize: 18}}>contact@zoosea.net</Text>
             </View>
         </View>
-
-
-          <View>
-            <Image source={zooseaLogo} resizeMode='contain' style={{width: 120, bottom: 25}}/>
-          </View>
             
 
       </View>

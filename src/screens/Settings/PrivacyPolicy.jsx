@@ -42,7 +42,7 @@ const PrivacyPolicy = ({navigation}) => {
 
             In order to offer ad rewards and gifts earning, we may collect certain information about you, such as your name, email address, and device identifier. This information may be used to track your progress in earning rewards and gifts and to deliver those rewards and gifts to you. We will never sell or share this information with third parties for their own marketing purposes.
 
-            If you have any questions or concerns about our privacy policy, please contact us at support.zoosea@gmail.com.
+            If you have any questions or concerns about our privacy policy, please contact us at contact@zoosea.net.
 
             </Text>
 

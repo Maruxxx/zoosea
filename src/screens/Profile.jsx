@@ -14,10 +14,11 @@ const background = require('../../assets/media/bg/background.jpg')
 
 const Profile = ({navigation, route}) => {
 
-  const [bubblesCollected, setBubblesCollected] = useState()
-  const [rewardsRedeemed, setRewardsRedeemed] = useState()
+  const [bubblesCollected, setBubblesCollected] = useState('??')
+  const [rewardsRedeemed, setRewardsRedeemed] = useState('??')
 
   const { user } = route.params
+
 
   GoogleSignin.configure({
     webClientId: '1089705311110-f92u2cmb57miqifm3k42idm8grpmm4ta.apps.googleusercontent.com',

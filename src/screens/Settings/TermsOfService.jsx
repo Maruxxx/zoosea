@@ -48,7 +48,7 @@ const TermsOfService = ({navigation}) => {
 
 5. Termination: {"\n"} We reserve the right to terminate your access to our mobile application at any time for any reason, including without limitation, any violation of these terms of service. {"\n"} {"\n"}
 
-If you have any questions or concerns about our privacy policy, please contact us at support.zoosea@gmail.com.
+If you have any questions or concerns about our privacy policy, please contact us at contact@zoosea.net.
 
             </Text>
 

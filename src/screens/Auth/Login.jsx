@@ -60,6 +60,12 @@ const Login = ({navigation}) => {
           instagram: false,
           tiktok: false,
           facebook: false,
+          first_ad: serverTimestamp(),
+          second_ad: serverTimestamp(),
+          first_exe_link: serverTimestamp(),
+          second_exe_link: serverTimestamp(),
+          first_shrink_link: serverTimestamp(),
+          second_shrink_link: serverTimestamp(),
         });
         console.log("Document written!!");
       }

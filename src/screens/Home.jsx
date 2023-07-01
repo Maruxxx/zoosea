@@ -1,5 +1,6 @@
 import { View, Text, Image, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, RefreshControl, FlatList } from 'react-native'
-import React, {useCallback, useEffect,useRef,useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 import IonIcon from "@expo/vector-icons/Ionicons";
 
@@ -12,12 +13,16 @@ import { db } from '../../firebase';
 import { getDoc, doc, updateDoc } from "firebase/firestore/lite"; 
 import GeneralArticle from '../components/GeneralArticle';
 import RulesArticle from '../components/RulesArticle';
+import LatestNewsItem from '../components/LatestNewsItem';
 
 
 const Home = ({navigation, route}) => {
 
-  const [bubblesCollected, setBubblesCollected] = useState(0)
+  const [bubblesCollected, setBubblesCollected] = useState('??')
   const { user, latestNews, rules, general } = route.params
+
+
+  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-3224909038709130/8681213175';
 
 
   useEffect( () => {
@@ -62,7 +67,7 @@ const Home = ({navigation, route}) => {
     }
     bounces={false} showsVerticalScrollIndicator={false} style={styles.container}>
       <ImageBackground blurRadius={2} source={background} resizeMode="cover" style={styles.bgImage}>
-        
+      
         <View style={styles.header}>
           <View style={styles.bubbleCountWrapper}>
             <Image source={whiteBubble} style={{height: 25, width: 25}}/>
@@ -81,10 +86,10 @@ const Home = ({navigation, route}) => {
         </View>
 
 
+        <LatestNewsItem />
 
 
-
-        <View style={styles.__text}>
+        <View style={[styles.__text, { marginTop: 0}]}>
             <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Oceanic Wisdom</Text>
             <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Earn bubbles by watching daily rewarded ads.</Text>
           </View>
@@ -112,6 +117,16 @@ const Home = ({navigation, route}) => {
           ))
         }
 
+        
+          <BannerAd
+            unitId={adUnitId}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            requestOptions={{
+              requestNonPersonalizedAdsOnly: true,
+            }}
+            onAdFailedToLoad={(e) => {console.log(e)}}
+            
+          />
 
       </ImageBackground>
     </ScrollView>

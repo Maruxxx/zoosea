@@ -7,7 +7,7 @@ import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mo
 
 
 import { db } from '../../firebase';
-import { getDoc, doc, updateDoc } from "firebase/firestore/lite"; 
+import { getDoc, doc, updateDoc, serverTimestamp } from "firebase/firestore/lite"; 
 
 
 import * as Linking from 'expo-linking';
@@ -48,19 +48,25 @@ const octopusHand = require('../../assets/media/icons/octopus-hand.png')
 
 const Earn = ({navigation, route}) => {
 
-  const [bubblesCollected, setBubblesCollected] = useState(0)
+  const [bubblesCollected, setBubblesCollected] = useState('??')
   const { user } = route.params
 
   const [igClaimed, setIgClaimed] = useState();
   const [tkClaimed, setTkClaimed] = useState();
   const [fbClaimed, setFbClaimed] = useState();
 
+  const [firstAdTime, setFirstAdTime] = useState('??');
+  const [secondAdTime, setSecondAdTime] = useState('??');
 
-  const [Link1, setLink1] = useState(false);
-  const [Link2, setLink2] = useState(true);
+
+  const [exe_Link1, setExe_Link1] = useState('??');
+  const [exe_Link2, setExe_Link2] = useState('??');
+ 
+  const [shrink_Link1, setShrink_Link1] = useState('??');
+  const [shrink_Link2, setShrink_Link2] = useState('??');
 
 
-  const adUnitId = __DEV__ ? TestIds.REWARDED : 'ca-app-pub-3224909038709130/7223029991';
+  const adUnitId = TestIds.REWARDED
 
   const rewarded = RewardedAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: true,
@@ -89,22 +95,7 @@ const Earn = ({navigation, route}) => {
     }
     getUserDoc();
 
-    async function unsubscribeEarned() {
-      const docRef = doc(db, "users", user.uid);    
-      const docSnap = await getDoc(docRef)    
-      
-      rewarded.addAdEventListener(
-        RewardedAdEventType.EARNED_REWARD,
-        reward => {
-          updateDoc(docRef, "bubbles", docSnap.data().bubbles + 10);
-          console.log('User earned reward of ', reward);
-        },
-      );
-   } 
-
-   rewarded.load();
-
-   unsubscribeEarned()
+    
   }
 
   const [refreshing, setRefreshing] = useState(false);
@@ -118,20 +109,20 @@ const Earn = ({navigation, route}) => {
   }, []);
 
 
-  const onTimeRenew = async() => {
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
-
-    return await updateDoc(docRef, "")
-  }
-
-
 
   const onClaimTen = async() => {
     const docRef = doc(db, "users", user.uid);    
     const docSnap = await getDoc(docRef);
 
-    return await updateDoc(docRef, "bubbles", docSnap.data().bubbles + 10);
+      rewarded.addAdEventListener(
+        RewardedAdEventType.EARNED_REWARD,
+        reward => {
+          updateDoc(docRef, "bubbles", docSnap.data().bubbles + 10);
+          console.log('User earned reward of ', reward);
+        },
+      );
+   
+    return rewarded.load();
   }
   
   const onClaimFive = async() => {
@@ -146,6 +137,209 @@ const Earn = ({navigation, route}) => {
     return await updateDoc(docRef, `${socialAccount}`, true)
   }
 
+  const onClaimAdOne = async() => {
+    
+    
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+
+    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      rewarded.show();
+    });
+    
+    const unsubscribeEarned = rewarded.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        updateDoc(docRef, {
+          bubbles: docSnap.data().bubbles + reward.amount,
+          first_ad: new Date(Date.now() + 60*60*1000)
+        })
+        onRefresh();
+      },
+      );
+
+    rewarded.load();
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+    };
+    
+  }
+  
+  const onClaimAdTwo = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+
+    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      rewarded.show();
+    });
+    
+    const unsubscribeEarned = rewarded.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        updateDoc(docRef, {
+          bubbles: docSnap.data().bubbles + reward.amount,
+          second_ad: new Date(Date.now() + 60*60*1000)
+        })
+        onRefresh();
+      },
+      );
+
+    rewarded.load();
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+    };
+  }
+  
+  const __first_loggingTimeDifference = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+    
+    const fieldTime = await docSnap.data().first_ad
+    const diff =  (fieldTime.seconds * 1000) - Date.now()
+    
+    return Number(Math.round(diff / 60000))
+  }
+  
+  const __second_loggingTimeDifference = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+    
+    const fieldTime = await docSnap.data().second_ad
+    const diff =  (fieldTime.seconds * 1000) - Date.now()
+    
+    return Number(Math.round(diff / 60000))
+  }
+  
+  
+  const first_ad_diff = () => {
+    __first_loggingTimeDifference().then((res) => {
+      setFirstAdTime(res)
+    })
+    return firstAdTime
+  }
+  
+  const second_ad_diff = () => {
+    __second_loggingTimeDifference().then((res) => {
+      setSecondAdTime(res)
+    })
+    return secondAdTime
+  }
+  
+  const onClaimExeOne = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+
+    return await updateDoc(docRef, {
+      bubbles: docSnap.data().bubbles + 5,
+      first_exe_link: new Date(Date.now() + 60*60*24000)
+    })
+  }
+  
+  const __first_exe_link_difference = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+    
+    const fieldTime = await docSnap.data().first_exe_link
+    const diff =  (fieldTime.seconds * 1000) - Date.now()
+    
+    return Number(Math.round(diff / 3600000))
+  }
+  
+  const first_exe_link_diff = () => {
+    __first_exe_link_difference().then((res) => {
+      setExe_Link1(res)
+    })
+    return exe_Link1
+  }
+
+  const onClaimExeTwo = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+    
+    return await updateDoc(docRef, {
+      bubbles: docSnap.data().bubbles + 5,
+      second_exe_link: new Date(Date.now() + 60*60*24000)
+    })
+  }
+
+
+  const __second_exe_link_difference = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+
+    const fieldTime = await docSnap.data().second_exe_link
+    const diff =  (fieldTime.seconds * 1000) - Date.now()
+    
+    return Number(Math.round(diff / 3600000))
+  }
+
+  const second_exe_link_diff = () => {
+    __second_exe_link_difference().then((res) => {
+      setExe_Link2(res)
+    })
+    return exe_Link2
+  }
+
+
+  const onClaimShrinkOne = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+    
+    return await updateDoc(docRef, {
+      bubbles: docSnap.data().bubbles + 5,
+      first_shrink_link: new Date(Date.now() + 60*60*24000)
+    })
+  }
+
+
+  const __first_shrink_link_difference = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+
+    const fieldTime = await docSnap.data().first_shrink_link
+    const diff =  (fieldTime.seconds * 1000) - Date.now()
+    
+    return Number(Math.round(diff / 3600000))
+  }
+
+  const first_shrink_link_diff = () => {
+    __first_shrink_link_difference().then((res) => {
+      setShrink_Link1(res)
+    })
+    return shrink_Link1
+  }
+
+  const onClaimShrinkTwo = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+    
+    return await updateDoc(docRef, {
+      bubbles: docSnap.data().bubbles + 5,
+      second_shrink_link: new Date(Date.now() + 60*60*24000)
+    })
+  }
+
+  const __second_shrink_link_difference = async() => {
+    const docRef = doc(db, "users", user.uid)
+    const docSnap = await getDoc(docRef)
+
+    const fieldTime = await docSnap.data().second_shrink_link
+    const diff =  (fieldTime.seconds * 1000) - Date.now()
+    
+    return Number(Math.round(diff / 3600000))
+  }
+
+  const second_shrink_link_diff = () => {
+    __second_shrink_link_difference().then((res) => {
+      setShrink_Link2(res)
+    })
+    return shrink_Link2
+  }
+
   return (
     <ScrollView 
     refreshControl={
@@ -153,7 +347,6 @@ const Earn = ({navigation, route}) => {
     }
     bounces={false} showsVerticalScrollIndicator={false} style={styles.container}>
       <ImageBackground blurRadius={2} source={background} resizeMode="cover" style={styles.bgImage}>
-
         
         <View style={styles.header}>
           <View style={styles.bubbleCountWrapper}>
@@ -181,12 +374,33 @@ const Earn = ({navigation, route}) => {
 
           
           <View style={styles.adBannerCards}>
-            <TouchableOpacity style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}} onPress={() => {console.log(new Date(Date.now() + 60*60*5000))}}>
-              <UnactiveAdSquare time="1 Hour" image={notOctopus}/>
-            </TouchableOpacity>
-            <TouchableOpacity style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}}>
-              <ActiveAdSquare name="Goldfish" image={goldenFish}/>
-            </TouchableOpacity>
+            {
+              
+              first_ad_diff() <= 0 ? (
+                  <TouchableOpacity activeOpacity={.8} style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}} onPress={() => {onClaimAdOne();}}>
+                  <ActiveAdSquare name="Octopus" image={octopus}/>
+                </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity activeOpacity={.8} style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}}>
+                   <UnactiveAdSquare time={`${first_ad_diff()} minutes!`} image={notOctopus}/>
+                </TouchableOpacity>
+                )
+
+            }
+
+            {
+              second_ad_diff() <= 0 ? (
+                <TouchableOpacity activeOpacity={.8} style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}} onPress={() => {onClaimAdTwo();}}>
+                <ActiveAdSquare name="Goldfish" image={goldenFish}/>
+              </TouchableOpacity>
+                ) : (
+                <TouchableOpacity activeOpacity={.8} style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}}>
+                <UnactiveAdSquare name="Goldfish" time={`${second_ad_diff()} minutes!`} image={notGoldenFish}/>
+                </TouchableOpacity>
+                )
+
+            }
+            
           </View>
 
         </View>
@@ -196,32 +410,32 @@ const Earn = ({navigation, route}) => {
           <Image source={octopusHand} resizeMode='contain' style={{ width: 40, height: 75, position: 'absolute', left: 0, top: 50}}/>
 
           <View style={styles.__text}>
-            <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Download & Earn</Text>
+            <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Visit & Earn</Text>
             <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Earn 5 bubbles by completing every link.</Text>
           </View>
           
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 15, marginBottom: 10}}>
             
             {
-                Link1 ? (
-                    <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                first_exe_link_diff() <= 0 ? (
+                    <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={() => {Linking.openURL('https://exe.io/zoosea1'); onRefresh(); onClaimExeOne();}}>
                         <ActiveLink image={exe} number="1"/>
                     </TouchableOpacity>
                 ) : (
                     <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-                        <UnactiveLink time="24 Hrs" />
+                        <UnactiveLink time={`${first_exe_link_diff()} Hrs`} />
                     </TouchableOpacity>
                 )
             }
             
             {
-                Link2 ? (
-                    <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                second_exe_link_diff() <= 0 ? (
+                    <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={() => {Linking.openURL('https://exe.io/zoosea2'); onRefresh(); onClaimExeTwo();}}>
                         <ActiveLink image={exe} number="2"/>
                     </TouchableOpacity>
                 ) : (
                     <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-                        <UnactiveLink time="24 Hrs" />
+                        <UnactiveLink time={`${second_exe_link_diff()} Hrs`} />
                     </TouchableOpacity>
                 )
             }
@@ -229,14 +443,31 @@ const Earn = ({navigation, route}) => {
           </View>
           
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 15}}>
-
-            <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-                <ActiveLink image={shrink} number="1"/>
-            </TouchableOpacity>
             
-            <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-                <ActiveLink image={shrink} number="2"/>
-            </TouchableOpacity>
+            {
+              first_shrink_link_diff() <= 0 ? (
+                <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={() => {Linking.openURL('https://tii.la/zoosea1'); onRefresh(); onClaimShrinkOne();}}>
+                    <ActiveLink image={shrink} number="1"/>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                    <UnactiveLink time={`${first_shrink_link_diff()} Hrs`}/>
+                </TouchableOpacity>
+              )
+            }
+            
+            {
+              second_shrink_link_diff() <= 0 ? (
+                <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={() => {Linking.openURL('https://tii.la/zoosea2'); onRefresh(); onClaimShrinkTwo();}}>
+                    <ActiveLink image={shrink} number="2"/>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+                    <UnactiveLink time={`${second_shrink_link_diff()} Hrs`}/>
+                </TouchableOpacity>
+              )
+            }
+            
 
           </View>
 
@@ -250,7 +481,7 @@ const Earn = ({navigation, route}) => {
           </View>
           
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, marginBottom: 10}}>
-            <TouchableOpacity onPress={() => {setCpxActive(true)}} activeOpacity={0.8} style={styles.button}>
+            <TouchableOpacity onPress={() =>  {console.log('CPX OPENED!')}} activeOpacity={0.8} style={styles.button}>
               <Image resizeMode='contain' source={cpx} style={{position: 'absolute', zIndex: 10, width: 90}} />
               <ImageBackground resizeMode='cover' source={btnBg} style={{width: '100%', height: '100%', borderRadius: 10}} />
             </TouchableOpacity>

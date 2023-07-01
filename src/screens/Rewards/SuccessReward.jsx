@@ -38,7 +38,7 @@ const SuccessReward = ({navigation, route}) => {
         <View style={styles.congratsWrapper}>
           <Image source={success} resizeMode='contain' style={{width: 250, height: 170}}/>
           <Text style={{fontFamily: 'AsapBold', fontSize: 42, color: 'white', marginVertical: 15}}>Congrats!</Text>
-          <Text style={{fontFamily: 'AsapLight', fontSize: 22, color: 'white', textAlign: 'center'}}>You’ll receive an email about your gift!</Text>
+          <Text style={{fontFamily: 'AsapLight', fontSize: 22, color: 'white', textAlign: 'center'}}>You’ll receive an email about your gift within 48hours!</Text>
         </View>
 
         </View>

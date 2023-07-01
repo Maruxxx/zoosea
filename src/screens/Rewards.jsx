@@ -20,6 +20,9 @@ const pubg = require('../../assets/media/rewards/pubg.png')
 const steam = require('../../assets/media/rewards/steam.png')
 const xbox = require('../../assets/media/rewards/xbox.png')
 
+const jewel = require('../../assets/media/rewards/jewel.png')
+const uc = require('../../assets/media/rewards/uc.png')
+
 const shirt = require('../../assets/media/rewards/shirt.png')
 const mug = require('../../assets/media/rewards/mug.png')
 
@@ -69,6 +72,8 @@ const Rewards = ({navigation, route}) => {
     }, 2000);
   }, []);
 
+  
+
 
   return (
     <ScrollView
@@ -99,28 +104,28 @@ const Rewards = ({navigation, route}) => {
 
           <View style={styles.packs}>
             
-              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {image: gp, title: 'Google Play', bubblesCollected})}}>
+              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {user: user, image: gp, title: 'Google Play', bubblesCollected, unit: null, price1: '5$', price2: '25$', price3: '50$', price4: '100$'})}}>
                 <Image source={gp} resizeMode='contain' style={styles.pack}/>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {image: ppl, title: 'PayPal', bubblesCollected})}}>
+              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {user: user,image: ppl, title: 'PayPal', bubblesCollected, unit: null, price1: '5$', price2: '25$', price3: '50$', price4: '100$'})}}>
                 <Image source={ppl} resizeMode='contain' style={styles.pack}/>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {image: nf, title: 'Netflix', bubblesCollected})}}>
+              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {user: user,image: nf, title: 'Netflix', bubblesCollected, unit: null, price1: '1 Month', price2: '3 Months', price3: '1 Year', price4: '2 Years'})}}>
                 <Image source={nf} style={styles.pack}/>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {image: steam, title: 'Steam', bubblesCollected})}}>
+              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {user: user,image: steam, title: 'Steam', bubblesCollected, unit: null, price1: '5$', price2: '25$', price3: '50$', price4: '100$'})}}>
                 <Image source={steam} style={styles.pack}/>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {image: ps, title: 'PlayStation', bubblesCollected})}}>
+              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {user: user,image: ps, title: 'PlayStation', bubblesCollected, unit: null, price1: '5$', price2: '25$', price3: '50$', price4: '100$'})}}>
                 <Image source={ps} style={styles.pack}/>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {image: xbox, title: 'Xbox', bubblesCollected})}}>
+              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {user: user,image: xbox, title: 'Xbox', bubblesCollected, unit: null, price1: '5$', price2: '25$', price3: '50$', price4: '100$'})}}>
                 <Image source={xbox} style={styles.pack}/>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {image: ff, title: 'Free Fire', bubblesCollected})}}>
+              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {user: user,image: ff, title: 'Free Fire', bubblesCollected, unit: jewel, price1: '530', price2: '2200', price3: '4450', price4: '6900'})}}>
                 <Image source={ff} style={styles.pack}/>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {image: pubg, title: 'PUBG', bubblesCollected})}}>
+              <TouchableOpacity onPress={() => {navigation.navigate('RewardDetail', {user: user,image: pubg, title: 'PUBG', bubblesCollected, unit: uc, price1: '325', price2: '1800', price3: '3850', price4: '8100'})}}>
                 <Image source={pubg} style={styles.pack}/>
               </TouchableOpacity>
           
@@ -160,7 +165,7 @@ customized shirts or mugs.</Text>
                 </View>
                 <TouchableOpacity onPress={() => {
                   if(bubblesCollected >= 1500) {
-                    navigation.navigate('RewardDetail')
+                    navigation.navigate('ConfirmReward', {title: 'Mug', user: user})
                   } else {
                     insufficiantPopUp();
                   }
@@ -176,7 +181,7 @@ customized shirts or mugs.</Text>
                 </View>
                 <TouchableOpacity onPress={() => {
                   if(bubblesCollected >= 2500) {
-                    navigation.navigate('RewardDetail')
+                    navigation.navigate('ConfirmReward', {title: 'T-shirt', user: user})
                   } else {
                     insufficiantPopUp();
                   }

@@ -4,6 +4,7 @@ import Profile from "./Profile";
 import Rewards from "./Rewards";
     import RewardDetail from "./Rewards/RewardDetail";
     import SuccessReward from "./Rewards/SuccessReward";
+    import ConfirmReward from './Rewards/ConfirmReward'
 import Settings from "./Settings";
 
 import PrivacyPolicy from "./Settings/PrivacyPolicy"
@@ -30,5 +31,6 @@ export {
     About,
     Menu,
     RewardDetail,
-    SuccessReward
+    SuccessReward,
+    ConfirmReward,
 }
