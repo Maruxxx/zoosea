@@ -1,25 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { LinearGradient } from 'expo-linear-gradient'
+import { ImageBackground, StyleSheet, Text, View } from 'react-native'
+import React, { memo } from 'react'
 import IonIcon from "@expo/vector-icons/Ionicons"
 import { TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native'
 
-const TermsOfService = ({navigation}) => {
+const background = require('../../../assets/media/bg/background.jpg')
+
+
+const TermsOfService = memo(({navigation}) => {
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={['#0035AE','#1F85EF']}
-        start={{ x: 0.5, y: 1}}
-        end={{x: 0, y: 0}}
-        style={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: 0, 
-            right: 0
-        }}
-      />
+      <ImageBackground source={background} resizeMode="cover" style={{flex: 1, width: "100%", display: 'flex', justifyContent:'center', alignItems: 'center'}}>
       <View style={styles.TermsOfServiceWrapper}>
           <View style={styles.routeName}>
             <TouchableOpacity onPress={() => {navigation.goBack()}} style={{position: 'absolute', left: 0}}>
@@ -54,9 +45,11 @@ If you have any questions or concerns about our privacy policy, please contact u
 
           </ScrollView>
       </View>
+
+      </ImageBackground>
     </View>
   )
-}
+})
 
 export default TermsOfService
 

@@ -6,25 +6,28 @@ import Rewards from "./Rewards";
     import SuccessReward from "./Rewards/SuccessReward";
     import ConfirmReward from './Rewards/ConfirmReward'
 import Settings from "./Settings";
-
-import PrivacyPolicy from "./Settings/PrivacyPolicy"
-import TermsOfService from "./Settings/TermsOfService"
-import Support from "./Settings/Support"
-import About from "./Settings/About"
-import Menu from './Settings/Menu'
+    import HowItWorks from "./Settings/HowItWorks";
+    import PrivacyPolicy from "./Settings/PrivacyPolicy"
+    import TermsOfService from "./Settings/TermsOfService"
+    import Support from "./Settings/Support"
+    import About from "./Settings/About"
+    import Menu from './Settings/Menu'
 import Onboarding from "../components/OnBoarding";
 
 import Login from "./Auth/Login";
+import ConfirmLogOut from "./Auth/ConfirmLogOut";
 
 
 export {
     Onboarding,
     Home,
     Login,
+    ConfirmLogOut,
     Profile,
     Earn,
     Rewards,
     Settings,
+    HowItWorks,
     PrivacyPolicy,
     TermsOfService,
     Support,

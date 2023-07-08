@@ -1,5 +1,5 @@
-import { View, Text, Image, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, RefreshControl, FlatList } from 'react-native'
-import React, {useCallback, useEffect, useState} from 'react'
+import { View, Text, Image, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, RefreshControl, FlatList, ActivityIndicator, Dimensions } from 'react-native'
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 import IonIcon from "@expo/vector-icons/Ionicons";
@@ -10,16 +10,22 @@ const sanara = require('../../assets/media/icons/sanara.png')
 const whiteBubble = require('../../assets/media/icons/white-bubble.png')
 
 import { db } from '../../firebase';
-import { getDoc, doc, updateDoc } from "firebase/firestore/lite"; 
+import { getDoc, doc } from "firebase/firestore/lite"; 
 import GeneralArticle from '../components/GeneralArticle';
 import RulesArticle from '../components/RulesArticle';
 import LatestNewsItem from '../components/LatestNewsItem';
 
 
-const Home = ({navigation, route}) => {
+
+const screenWidth= Dimensions.get('window').width;
+
+
+const Home = memo(({navigation, route}) => {
 
   const [bubblesCollected, setBubblesCollected] = useState('??')
+  const [loading, setLoading] = useState(false)
   const { user, latestNews, rules, general } = route.params
+
 
 
   const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-3224909038709130/8681213175';
@@ -60,6 +66,31 @@ const Home = ({navigation, route}) => {
     <RulesArticle key={item.id} title={item.title} desc={item.desc} image={item.image} url={item.url} />
     )
 
+
+    const renderLatestItem = ({item}) => (
+      <LatestNewsItem key={item.id} title={item.title} image={item.image}/>
+      )
+
+
+    const flatListRef=useRef();      
+    const indexRef=useRef(0);  
+
+
+    const onScroll=(event)=>{
+      const ind = event.nativeEvent.contentOffset.x / screenWidth;
+      const roundIndex = Math.round(ind);
+      indexRef.current=roundIndex;     
+  }
+  const startCarousel=()=>{
+      if(!loading){                    
+          setInterval(()=>{
+                                       
+              flatListRef.current?.scrollToIndex({animated: true, index: (parseInt(indexRef.current) +1)%19});
+          
+          }, 3000);
+      }
+  }
+
   return (
     <ScrollView 
     refreshControl={
@@ -86,12 +117,26 @@ const Home = ({navigation, route}) => {
         </View>
 
 
-        <LatestNewsItem />
+        <FlatList
+
+          data={latestNews}
+          keyExtractor={item=>item.id}
+          renderItem={renderLatestItem}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          ref={flatListRef}
+          onScroll={onScroll}
+          initialNumToRender={0}
+        
+        />
+
+
 
 
         <View style={[styles.__text, { marginTop: 0}]}>
             <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Oceanic Wisdom</Text>
-            <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Earn bubbles by watching daily rewarded ads.</Text>
+            <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Navigating the principles of the ocean world.</Text>
           </View>
 
 
@@ -107,7 +152,7 @@ const Home = ({navigation, route}) => {
 
         <View style={styles.__text}>
             <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Splash Of Knowledge</Text>
-            <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Earn bubbles by watching daily rewarded ads.</Text>
+            <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Dive into the the secrets of the deep.</Text>
           </View>
 
 
@@ -131,7 +176,7 @@ const Home = ({navigation, route}) => {
       </ImageBackground>
     </ScrollView>
   )
-}
+})
 
 export default Home
 

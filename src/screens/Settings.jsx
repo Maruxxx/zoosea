@@ -1,12 +1,11 @@
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native'
-import React from 'react'
-import Button from '../components/Button';
+import React, { memo } from 'react'
 import IonIcon from "@expo/vector-icons/Ionicons"
 
 
 const background = require('../../assets/media/bg/background.jpg')
 
-const Settings = ({navigation}) => {
+const Settings = memo(({navigation}) => {
   
 
 
@@ -27,24 +26,27 @@ const Settings = ({navigation}) => {
             borderRadius: 30,
           }}></View>
         <View style={styles.buttonsFrame}>
-          <View onTouchStart={() => {navigation.navigate('PrivacyPolicy')}}>
-            <Button name="Privacy Policy" color="#0D3E9B" font="AsapBold" size={20} backgroundColor="white" borderColor="#0D3E9B"/>
-          </View>
-          <View onTouchStart={() => {navigation.navigate('TermsOfService')}}>
-            <Button name="Terms of service" color="#0D3E9B" font="AsapBold" size={20} backgroundColor="white" borderColor="#0D3E9B"/>
-          </View>
-          <View onTouchStart={() => {navigation.navigate('Support')}}>
-            <Button name="Support" color="#0D3E9B" font="AsapBold" size={20} backgroundColor="white" borderColor="#0D3E9B"/>
-          </View>
-          <View onTouchStart={() => {navigation.navigate('About')}}>
-            <Button name="About" color="#0D3E9B" font="AsapBold" size={20} backgroundColor="white" borderColor="#0D3E9B"/>
-          </View>
+          <TouchableOpacity activeOpacity={0.9} style={styles.setting} onPress={() => {navigation.navigate('HowItWorks')}}>
+              <Text style={{fontFamily: 'AsapBold', fontSize: 20, color: '#0D3E9B'}}>How it works</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.9} style={styles.setting} onPress={() => {navigation.navigate('PrivacyPolicy')}}>
+              <Text style={{fontFamily: 'AsapBold', fontSize: 20, color: '#0D3E9B'}}>Privacy Policy</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.9} style={styles.setting} onPress={() => {navigation.navigate('TermsOfService')}}>
+              <Text style={{fontFamily: 'AsapBold', fontSize: 20, color: '#0D3E9B'}}>Terms of service</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.9} style={styles.setting} onPress={() => {navigation.navigate('Support')}}>
+              <Text style={{fontFamily: 'AsapBold', fontSize: 20, color: '#0D3E9B'}}>Support</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.9} style={styles.setting} onPress={() => {navigation.navigate('About')}}>
+              <Text style={{fontFamily: 'AsapBold', fontSize: 20, color: '#0D3E9B'}}>About</Text>
+          </TouchableOpacity>
         </View>
       </View>
       </ImageBackground>
     </View>
   )
-}
+})
 
 export default Settings
 
@@ -73,7 +75,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 15,
+    gap: 5,
+    width: '100%'
   }, 
+
+  setting: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    width: '100%',
+    paddingVertical: 15,
+    marginVertical: 10,
+    borderRadius: 8,
+  }
 
 })

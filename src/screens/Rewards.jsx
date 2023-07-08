@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity, RefreshControl } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import IonIcon from "@expo/vector-icons/Ionicons"
 
 import { getDoc, doc, updateDoc } from "firebase/firestore/lite"; 
@@ -27,7 +27,7 @@ const shirt = require('../../assets/media/rewards/shirt.png')
 const mug = require('../../assets/media/rewards/mug.png')
 
 
-const Rewards = ({navigation, route}) => {
+const Rewards = memo(({navigation, route}) => {
 
   const [bubblesCollected, setBubblesCollected] = useState()
 
@@ -198,7 +198,7 @@ customized shirts or mugs.</Text>
       </ImageBackground>
     </ScrollView>
   )
-}
+})
 
 export default Rewards
 
