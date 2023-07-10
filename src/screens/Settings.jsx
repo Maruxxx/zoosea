@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native'
 import React, { memo } from 'react'
 import IonIcon from "@expo/vector-icons/Ionicons"
+import InternetCheck from '../components/InternetCheck'
 
 
 const background = require('../../assets/media/bg/background.jpg')
@@ -43,6 +44,8 @@ const Settings = memo(({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <InternetCheck />
       </ImageBackground>
     </View>
   )
@@ -75,7 +78,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 5,
     width: '100%'
   }, 
 

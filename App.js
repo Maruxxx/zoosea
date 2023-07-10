@@ -3,11 +3,18 @@ import React, { useState, useEffect} from 'react';
 import { useFonts } from "expo-font"
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import NetInfo from '@react-native-community/netinfo';
+
+import * as SplashScreen from 'expo-splash-screen';
 
 import auth from '@react-native-firebase/auth';
 
-import { Home, Profile, Rewards, Settings, PrivacyPolicy, TermsOfService, Support, About, Menu, Login, Onboarding, RewardDetail, SuccessReward, Earn, ConfirmReward, HowItWorks, ConfirmLogOut } from './src/screens';
+import { Home, Profile, Rewards, Settings, PrivacyPolicy, TermsOfService, Support, About, Menu, Login, Onboarding, RewardDetail, SuccessReward, Earn, ConfirmReward, HowItWorks, ConfirmLogOut, NotAvailable } from './src/screens';
 import { __general, __latestNews, __rules } from './src/data/articles';
+
+
+SplashScreen.preventAutoHideAsync();
+
 
 export default function App() {
 
@@ -26,7 +33,17 @@ export default function App() {
   useEffect(() => {
 
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; 
+    
+    const unsubscribe = NetInfo.addEventListener(state => {
+      if (state.isConnected == true) {
+        SplashScreen.hideAsync();
+      }
+    });
+
+    return () => {
+      subscriber();
+      unsubscribe();
+    } 
     
   }, [])
   
@@ -66,6 +83,7 @@ export default function App() {
             <Stack.Screen name='Home' component={Home} initialParams={{ user: user, latestNews, rules, general}} />
             <Stack.Screen name='Menu' component={Menu} initialParams={{ user: user}}/>
             <Stack.Screen name='Earn' component={Earn} initialParams={{ user: user}}/>
+            <Stack.Screen name='NotAvailable' component={NotAvailable} />
             <Stack.Screen name='Rewards' component={Rewards} />
             <Stack.Screen name='RewardDetail' component={RewardDetail}/>
             <Stack.Screen name='SuccessReward' component={SuccessReward}/>

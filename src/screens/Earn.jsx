@@ -1,5 +1,5 @@
-import { View, Text, Image, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native'
-import React, {useCallback, useEffect,useState} from 'react'
+import { View, Text, Image, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, RefreshControl, Animated } from 'react-native'
+import React, {useCallback, useEffect,useRef,useState} from 'react'
 
 import IonIcon from "@expo/vector-icons/Ionicons";
 
@@ -15,6 +15,7 @@ import ActiveAdSquare from '../components/ActiveAdSquare';
 import ActiveLink from '../components/ActiveLink';
 import UnactiveLink from '../components/UnactiveLink';
 import UnactiveAdSquare from '../components/UnactiveAdSquare';
+import InternetCheck from '../components/InternetCheck';
 
 
 
@@ -340,6 +341,33 @@ const Earn = ({navigation, route}) => {
     return shrink_Link2
   }
 
+
+  const fadeAnimation = useRef(new Animated.Value(0)).current
+
+  const fadeIn = () => {
+    Animated.timing(fadeAnimation, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true
+    }).start()
+  }
+
+  const fadeOut = () => {
+    Animated.timing(fadeAnimation, {
+      toValue: 0,
+      duration: 2000,
+      useNativeDriver: true
+    }).start()
+  }
+
+
+  const adLoadingPopUp = () => {
+    fadeIn();
+    setTimeout(() => {
+      fadeOut();
+    }, 2000)
+  }
+
   return (
     <ScrollView 
     refreshControl={
@@ -347,6 +375,12 @@ const Earn = ({navigation, route}) => {
     }
     bounces={false} showsVerticalScrollIndicator={false} style={styles.container}>
       <ImageBackground blurRadius={2} source={background} resizeMode="cover" style={styles.bgImage}>
+
+
+        <Animated.View style={{opacity: fadeAnimation, backgroundColor: 'rgba(68, 68, 68, 0.6)', width: '50%', height: 50, position: 'absolute', top: 50, zIndex: 155, borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{fontFamily: 'AsapMedium', color: 'white', fontSize: 18}}>Ad Loading...</Text>
+        </Animated.View>
+
         
         <View style={styles.header}>
           <View style={styles.bubbleCountWrapper}>
@@ -377,7 +411,7 @@ const Earn = ({navigation, route}) => {
             {
               
               first_ad_diff() <= 0 ? (
-                  <TouchableOpacity activeOpacity={.8} style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}} onPress={() => {onClaimAdOne();}}>
+                  <TouchableOpacity activeOpacity={.8} style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}} onPress={() => {adLoadingPopUp(); onClaimAdOne();}}>
                   <ActiveAdSquare name="Octopus" image={octopus}/>
                 </TouchableOpacity>
                 ) : (
@@ -390,7 +424,7 @@ const Earn = ({navigation, route}) => {
 
             {
               second_ad_diff() <= 0 ? (
-                <TouchableOpacity activeOpacity={.8} style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}} onPress={() => {onClaimAdTwo();}}>
+                <TouchableOpacity activeOpacity={.8} style={{borderBottomColor: 'white', borderBottomWidth: 5, borderRadius: 10}} onPress={() => {adLoadingPopUp(); onClaimAdTwo();}}>
                 <ActiveAdSquare name="Goldfish" image={goldenFish}/>
               </TouchableOpacity>
                 ) : (
@@ -481,12 +515,12 @@ const Earn = ({navigation, route}) => {
           </View>
           
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, marginBottom: 10}}>
-            <TouchableOpacity onPress={() =>  {console.log('CPX OPENED!')}} activeOpacity={0.8} style={styles.button}>
+            <TouchableOpacity onPress={() =>  {navigation.navigate('NotAvailable', { title: 'Cpx Reasearch'})}} activeOpacity={0.8} style={styles.button}>
               <Image resizeMode='contain' source={cpx} style={{position: 'absolute', zIndex: 10, width: 90}} />
               <ImageBackground resizeMode='cover' source={btnBg} style={{width: '100%', height: '100%', borderRadius: 10}} />
             </TouchableOpacity>
             
-            <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+            <TouchableOpacity onPress={() =>  {navigation.navigate('NotAvailable', { title: 'Bitlabs'})}} activeOpacity={0.8} style={styles.button}>
               <Image resizeMode='contain' source={bitlabs} style={{position: 'absolute', zIndex: 10, width: 70}} />
               <ImageBackground resizeMode='cover' source={btnBg} style={{width: '100%', height: '100%', borderRadius: 10}} />
             </TouchableOpacity>
@@ -589,6 +623,7 @@ const Earn = ({navigation, route}) => {
 
         </View>
 
+      <InternetCheck />
       </ImageBackground>
     </ScrollView>
   

@@ -24,7 +24,7 @@ const Login = ({navigation}) => {
     webClientId: '1089705311110-f92u2cmb57miqifm3k42idm8grpmm4ta.apps.googleusercontent.com',
   });
 
-  const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-3224909038709130/5057699951';
+  const adUnitId = TestIds.INTERSTITIAL
 
   const interstitial = InterstitialAd.createForAdRequest(adUnitId);
 
@@ -82,7 +82,10 @@ const Login = ({navigation}) => {
     <View style={styles.container}>
       <ImageBackground source={background} resizeMode="cover" style={styles.bgImage}>
           <View style={styles.contentWrapper}>
-            <Image source={zoosea} resizeMode='contain' style={{width: 170, height: 36}}/>
+
+
+
+            <Image source={zoosea} resizeMode='contain' style={{width: 170 / 1.1, height: 36 / 1.1, marginVertical: 10}}/>
             <TouchableOpacity onPress={() => {onGoogleButtonPress()}} activeOpacity={.8} style={styles.googleButton}>
               <Image  source={google} style={{width: 20, height: 20,}}/>
               <Text style={{fontFamily: 'AsapMedium', fontSize: 18, color: '#0D3E9B', textAlign: 'center', bottom: 1}}>Sign in with Google</Text>

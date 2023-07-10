@@ -1,8 +1,7 @@
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
+
 
 
 
@@ -12,20 +11,7 @@ const background = require('../../../assets/media/bg/background.jpg')
 
 const ConfirmLogOut = ({navigation, route}) => {
 
-  const { user } = route.params 
-
-  GoogleSignin.configure({
-    webClientId: '1089705311110-f92u2cmb57miqifm3k42idm8grpmm4ta.apps.googleusercontent.com',
-  });
-
-  async function signOut() {
-    try {
-      await GoogleSignin.revokeAccess();
-      await auth().signOut();
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const { user, signOut } = route.params 
 
 
   return (
@@ -35,10 +21,10 @@ const ConfirmLogOut = ({navigation, route}) => {
         <View style={styles.congratsWrapper}>
           <Text style={{color: 'white', fontFamily: 'AsapBold', fontSize: 22, marginHorizontal: 25, textAlign: 'center', marginVertical: 10}}>Do you want to log out from this account ?</Text>
 
-          <TouchableOpacity style={styles.confirm} onPress={() => {signOut()}}>
-            <Text style={{fontFamily: 'AsapBold', fontSize: 22, color: 'white'}}>Log Out</Text>
+          <TouchableOpacity style={styles.confirm} onPress={() => {signOut();}}>
+            <Text style={{fontFamily: 'AsapBold', fontSize: 22, color: 'white'}}>Log out</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cancel} onPress={() => {navigation.goBack()}}>
+          <TouchableOpacity style={styles.cancel} onPress={() => {navigation.replace('Profile', {user: user})}}>
             <Text style={{fontFamily: 'AsapBold', fontSize: 20, color: '#0037AF'}}>Cancel</Text>
           </TouchableOpacity>
         </View>

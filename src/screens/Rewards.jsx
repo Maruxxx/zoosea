@@ -4,6 +4,7 @@ import IonIcon from "@expo/vector-icons/Ionicons"
 
 import { getDoc, doc, updateDoc } from "firebase/firestore/lite"; 
 import { db } from '../../firebase'
+import InternetCheck from '../components/InternetCheck';
 
 
 const background = require('../../assets/media/bg/background.jpg')
@@ -195,6 +196,7 @@ customized shirts or mugs.</Text>
 
         </View>
 
+        <InternetCheck />
       </ImageBackground>
     </ScrollView>
   )

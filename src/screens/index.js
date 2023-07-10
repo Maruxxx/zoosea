@@ -1,5 +1,6 @@
 import Home from "./Home";
 import Earn from "./Earn";
+    import NotAvailable from "../components/NotAvailable";
 import Profile from "./Profile";
 import Rewards from "./Rewards";
     import RewardDetail from "./Rewards/RewardDetail";
@@ -25,6 +26,7 @@ export {
     ConfirmLogOut,
     Profile,
     Earn,
+    NotAvailable,
     Rewards,
     Settings,
     HowItWorks,

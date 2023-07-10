@@ -5,7 +5,12 @@ import IonIcon from "@expo/vector-icons/Ionicons"
 import { db } from '../../firebase';
 import { getDoc, doc } from "firebase/firestore/lite"; 
 
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+
+
 import { ImageBackground } from 'react-native';
+import InternetCheck from '../components/InternetCheck';
 
 const background = require('../../assets/media/bg/background.jpg')
 
@@ -35,6 +40,20 @@ const Profile = ({navigation, route}) => {
     getUserDoc();
   }, [bubblesCollected])
  
+
+
+  GoogleSignin.configure({
+    webClientId: '1089705311110-f92u2cmb57miqifm3k42idm8grpmm4ta.apps.googleusercontent.com',
+  });
+
+  async function signOut() {
+    try {
+      GoogleSignin.revokeAccess();
+      auth().signOut();
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   
  
@@ -89,12 +108,12 @@ const Profile = ({navigation, route}) => {
 
             </View>
 
-            <TouchableOpacity onPress={() => {navigation.navigate('ConfirmLogOut', { user: user})}} activeOpacity={.8} style={styles.googleButton}>
-              <Text style={{fontFamily: 'AsapBold', fontSize: 22, color: 'white', textAlign: 'center', bottom: 1}}>Log Out</Text>
+            <TouchableOpacity onPress={() => {navigation.replace('ConfirmLogOut', { user: user, signOut})}} activeOpacity={.8} style={styles.googleButton}>
+              <Text style={{fontFamily: 'AsapBold', fontSize: 22, color: 'white', textAlign: 'center', bottom: 1}}>Logout</Text>
             </TouchableOpacity>
 
         </View>
-
+        <InternetCheck />
       </ImageBackground>
       
     </View>

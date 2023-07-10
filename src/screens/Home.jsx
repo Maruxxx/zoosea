@@ -14,6 +14,8 @@ import { getDoc, doc } from "firebase/firestore/lite";
 import GeneralArticle from '../components/GeneralArticle';
 import RulesArticle from '../components/RulesArticle';
 import LatestNewsItem from '../components/LatestNewsItem';
+import InternetCheck from '../components/InternetCheck';
+
 
 
 
@@ -22,13 +24,12 @@ const screenWidth= Dimensions.get('window').width;
 
 const Home = memo(({navigation, route}) => {
 
-  const [bubblesCollected, setBubblesCollected] = useState('??')
-  const [loading, setLoading] = useState(false)
+  const [bubblesCollected, setBubblesCollected] = useState('0')
   const { user, latestNews, rules, general } = route.params
 
 
 
-  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-3224909038709130/8681213175';
+  const adUnitId = TestIds.BANNER
 
 
   useEffect( () => {
@@ -68,28 +69,8 @@ const Home = memo(({navigation, route}) => {
 
 
     const renderLatestItem = ({item}) => (
-      <LatestNewsItem key={item.id} title={item.title} image={item.image}/>
+      <LatestNewsItem key={item.id} title={item.title} image={item.image} url={item.url}/>
       )
-
-
-    const flatListRef=useRef();      
-    const indexRef=useRef(0);  
-
-
-    const onScroll=(event)=>{
-      const ind = event.nativeEvent.contentOffset.x / screenWidth;
-      const roundIndex = Math.round(ind);
-      indexRef.current=roundIndex;     
-  }
-  const startCarousel=()=>{
-      if(!loading){                    
-          setInterval(()=>{
-                                       
-              flatListRef.current?.scrollToIndex({animated: true, index: (parseInt(indexRef.current) +1)%19});
-          
-          }, 3000);
-      }
-  }
 
   return (
     <ScrollView 
@@ -116,25 +97,21 @@ const Home = memo(({navigation, route}) => {
           <Image source={sanara} resizeMode='contain' style={{width: 106, height: 173, }}/>
         </View>
 
+        <View style={[styles.__text, {marginBottom: 10}]}>
+            <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Latest News</Text>
+            <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Discover the latest ocean news with us.</Text>
+          </View>
 
-        <FlatList
-
-          data={latestNews}
-          keyExtractor={item=>item.id}
-          renderItem={renderLatestItem}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          ref={flatListRef}
-          onScroll={onScroll}
-          initialNumToRender={0}
-        
-        />
+        <FlatList 
+              data={latestNews}
+              renderItem={renderLatestItem}
+              keyExtractor={item => item.id}
+              horizontal={true}
+              />
 
 
 
-
-        <View style={[styles.__text, { marginTop: 0}]}>
+        <View style={[styles.__text, { marginTop: 10}]}>
             <Text style={{fontFamily: 'AsapBold', fontSize: 26, color: 'white'}}>Oceanic Wisdom</Text>
             <Text style={{fontFamily: 'AsapRegular', fontSize: 14, color: 'white', opacity: 0.6}}>Navigating the principles of the ocean world.</Text>
           </View>
@@ -170,9 +147,9 @@ const Home = memo(({navigation, route}) => {
               requestNonPersonalizedAdsOnly: true,
             }}
             onAdFailedToLoad={(e) => {console.log(e)}}
-            
           />
 
+          <InternetCheck />
       </ImageBackground>
     </ScrollView>
   )
