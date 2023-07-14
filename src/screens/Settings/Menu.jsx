@@ -32,7 +32,7 @@ const Menu = ({ navigation, route }) => {
             <TouchableOpacity onPress={() => navigation.navigate('Profile', {user})}>
                 <Text style={currentRoute == 'Profile' ? styles.activeRoute : styles.notActiveRoute}>Profile</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Settings', {user: user})}>
                 <Text style={currentRoute == 'Settings' ? styles.activeRoute : styles.notActiveRoute}>Settings</Text>
             </TouchableOpacity>
         </View>

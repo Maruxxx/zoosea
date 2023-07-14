@@ -13,6 +13,7 @@ import Settings from "./Settings";
     import Support from "./Settings/Support"
     import About from "./Settings/About"
     import Menu from './Settings/Menu'
+    import ConfirmDelete from "./Auth/ConfirmDelete";
 import Onboarding from "../components/OnBoarding";
 
 import Login from "./Auth/Login";
@@ -35,6 +36,7 @@ export {
     Support,
     About,
     Menu,
+    ConfirmDelete,
     RewardDetail,
     SuccessReward,
     ConfirmReward,

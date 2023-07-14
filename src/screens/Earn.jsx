@@ -15,7 +15,6 @@ import ActiveAdSquare from '../components/ActiveAdSquare';
 import ActiveLink from '../components/ActiveLink';
 import UnactiveLink from '../components/UnactiveLink';
 import UnactiveAdSquare from '../components/UnactiveAdSquare';
-import InternetCheck from '../components/InternetCheck';
 
 
 
@@ -67,11 +66,12 @@ const Earn = ({navigation, route}) => {
   const [shrink_Link2, setShrink_Link2] = useState('??');
 
 
-  const adUnitId = TestIds.REWARDED
+  const octopusAdUnitId = 'ca-app-pub-3224909038709130/7223029991'
+  const goldenFishAdUnitId = 'ca-app-pub-3224909038709130/4584327125'
 
-  const rewarded = RewardedAd.createForAdRequest(adUnitId, {
-    requestNonPersonalizedAdsOnly: true,
-  });
+  const octopusRewarded = RewardedAd.createForAdRequest(octopusAdUnitId);
+  
+  const goldenFishRewarded = RewardedAd.createForAdRequest(goldenFishAdUnitId);
   
   
   useEffect( () => {
@@ -115,7 +115,7 @@ const Earn = ({navigation, route}) => {
     const docRef = doc(db, "users", user.uid);    
     const docSnap = await getDoc(docRef);
 
-      rewarded.addAdEventListener(
+    octopusRewarded.addAdEventListener(
         RewardedAdEventType.EARNED_REWARD,
         reward => {
           updateDoc(docRef, "bubbles", docSnap.data().bubbles + 10);
@@ -123,7 +123,7 @@ const Earn = ({navigation, route}) => {
         },
       );
    
-    return rewarded.load();
+    return octopusRewarded.load();
   }
   
   const onClaimFive = async() => {
@@ -144,11 +144,11 @@ const Earn = ({navigation, route}) => {
     const docRef = doc(db, "users", user.uid)
     const docSnap = await getDoc(docRef)
 
-    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
-      rewarded.show();
+    const unsubscribeLoaded = octopusRewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      octopusRewarded.show();
     });
     
-    const unsubscribeEarned = rewarded.addAdEventListener(
+    const unsubscribeEarned = octopusRewarded.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       reward => {
         updateDoc(docRef, {
@@ -159,7 +159,7 @@ const Earn = ({navigation, route}) => {
       },
       );
 
-    rewarded.load();
+      octopusRewarded.load();
 
     return () => {
       unsubscribeLoaded();
@@ -172,11 +172,11 @@ const Earn = ({navigation, route}) => {
     const docRef = doc(db, "users", user.uid)
     const docSnap = await getDoc(docRef)
 
-    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
-      rewarded.show();
+    const unsubscribeLoaded = goldenFishRewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      goldenFishRewarded.show();
     });
     
-    const unsubscribeEarned = rewarded.addAdEventListener(
+    const unsubscribeEarned = goldenFishRewarded.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       reward => {
         updateDoc(docRef, {
@@ -187,7 +187,7 @@ const Earn = ({navigation, route}) => {
       },
       );
 
-    rewarded.load();
+      goldenFishRewarded.load();
 
     return () => {
       unsubscribeLoaded();
@@ -623,7 +623,6 @@ const Earn = ({navigation, route}) => {
 
         </View>
 
-      <InternetCheck />
       </ImageBackground>
     </ScrollView>
   

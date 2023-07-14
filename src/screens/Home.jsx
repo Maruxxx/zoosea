@@ -1,6 +1,6 @@
-import { View, Text, Image, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, RefreshControl, FlatList, ActivityIndicator, Dimensions } from 'react-native'
-import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import { View, Text, Image, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, RefreshControl, FlatList } from 'react-native'
+import React, {memo, useCallback, useEffect, useState} from 'react'
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 
 import IonIcon from "@expo/vector-icons/Ionicons";
 
@@ -14,12 +14,6 @@ import { getDoc, doc } from "firebase/firestore/lite";
 import GeneralArticle from '../components/GeneralArticle';
 import RulesArticle from '../components/RulesArticle';
 import LatestNewsItem from '../components/LatestNewsItem';
-import InternetCheck from '../components/InternetCheck';
-
-
-
-
-const screenWidth= Dimensions.get('window').width;
 
 
 const Home = memo(({navigation, route}) => {
@@ -28,8 +22,7 @@ const Home = memo(({navigation, route}) => {
   const { user, latestNews, rules, general } = route.params
 
 
-
-  const adUnitId = TestIds.BANNER
+  const adUnitId = 'ca-app-pub-3224909038709130/8681213175'
 
 
   useEffect( () => {
@@ -143,13 +136,9 @@ const Home = memo(({navigation, route}) => {
           <BannerAd
             unitId={adUnitId}
             size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-            requestOptions={{
-              requestNonPersonalizedAdsOnly: true,
-            }}
             onAdFailedToLoad={(e) => {console.log(e)}}
           />
 
-          <InternetCheck />
       </ImageBackground>
     </ScrollView>
   )

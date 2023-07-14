@@ -1,14 +1,13 @@
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native'
 import React, { memo } from 'react'
 import IonIcon from "@expo/vector-icons/Ionicons"
-import InternetCheck from '../components/InternetCheck'
 
 
 const background = require('../../assets/media/bg/background.jpg')
 
-const Settings = memo(({navigation}) => {
+const Settings = memo(({navigation, route}) => {
   
-
+  const { user } = route.params
 
   return (
     <View style={styles.container}>
@@ -42,10 +41,12 @@ const Settings = memo(({navigation}) => {
           <TouchableOpacity activeOpacity={0.9} style={styles.setting} onPress={() => {navigation.navigate('About')}}>
               <Text style={{fontFamily: 'AsapBold', fontSize: 20, color: '#0D3E9B'}}>About</Text>
           </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.9} style={[styles.setting, {backgroundColor: '#F1316B'}]} onPress={() => {navigation.navigate('ConfirmDelete', {user: user})}}>
+              <Text style={{fontFamily: 'AsapBold', fontSize: 20, color: 'white'}}>Delete Account</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
-      <InternetCheck />
       </ImageBackground>
     </View>
   )

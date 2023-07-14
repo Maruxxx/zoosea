@@ -2,7 +2,7 @@
   "expo": {
     "name": "Zoosea",
     "slug": "zoosea",
-    "version": "1.3.0",
+    "version": "1.5.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0035ae"
       },
-      "package": "com.marux.zoosea"
+      "package": "com.marux.zoosea",
+      "versionCode": 1
     },
     "plugins": [
       "@react-native-google-signin/google-signin",

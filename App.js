@@ -8,8 +8,9 @@ import NetInfo from '@react-native-community/netinfo';
 import * as SplashScreen from 'expo-splash-screen';
 
 import auth from '@react-native-firebase/auth';
+import { firebase_auth } from './firebase';
 
-import { Home, Profile, Rewards, Settings, PrivacyPolicy, TermsOfService, Support, About, Menu, Login, Onboarding, RewardDetail, SuccessReward, Earn, ConfirmReward, HowItWorks, ConfirmLogOut, NotAvailable } from './src/screens';
+import { Home, Profile, Rewards, Settings, PrivacyPolicy, TermsOfService, Support, About, Menu, Login, Onboarding, RewardDetail, SuccessReward, Earn, ConfirmReward, HowItWorks, ConfirmLogOut, NotAvailable, ConfirmDelete } from './src/screens';
 import { __general, __latestNews, __rules } from './src/data/articles';
 
 
@@ -30,9 +31,13 @@ export default function App() {
     if (initializing) setInitializing(false);
   }
   
+
+  console.log(user)
+  
+
   useEffect(() => {
 
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    const subscriber_google = auth().onAuthStateChanged(onAuthStateChanged)
     
     const unsubscribe = NetInfo.addEventListener(state => {
       if (state.isConnected == true) {
@@ -41,10 +46,9 @@ export default function App() {
     });
 
     return () => {
-      subscriber();
+      subscriber_google();
       unsubscribe();
     } 
-    
   }, [])
   
   
@@ -57,11 +61,6 @@ export default function App() {
     "AsapSemiBold": require('./assets/fonts/Asap-SemiBold.ttf')
   })
   
-  console.log(initializing)
-  console.log(user)
-  
-
-      
   if (initializing) return null
         
   const Stack = createNativeStackNavigator();
@@ -90,6 +89,7 @@ export default function App() {
             <Stack.Screen name='ConfirmReward' component={ConfirmReward}/>
             <Stack.Screen name='Profile' component={Profile} />
             <Stack.Screen name='Settings' component={Settings} />
+            <Stack.Screen name='ConfirmDelete' component={ConfirmDelete} />
             <Stack.Screen name='HowItWorks' component={HowItWorks} />
             <Stack.Screen name='PrivacyPolicy' component={PrivacyPolicy} />
             <Stack.Screen name='TermsOfService' component={TermsOfService} />

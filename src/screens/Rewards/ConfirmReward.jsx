@@ -36,7 +36,7 @@ const ConfirmReward = ({navigation, route}) => {
     const docRef = doc(db, "users", user.uid)
     const docSnap = await getDoc(docRef)
 
-    return await updateDoc(docRef, "bubbles", {
+    return await updateDoc(docRef, {
       bubbles: docSnap.data().bubbles - x,
       rewards: docSnap.data().rewards + 1
     });
@@ -50,7 +50,7 @@ const ConfirmReward = ({navigation, route}) => {
         <View style={styles.congratsWrapper}>
           <Text style={{color: 'white', fontFamily: 'AsapBold', fontSize: 22, marginHorizontal: 25, textAlign: 'center', marginVertical: 10}}>Do you want to confirm your {title} reward redeem ?</Text>
 
-          <TouchableOpacity style={styles.confirm} onPress={() => {accountSubtraction(bubs) ;navigation.navigate('SuccessReward', {title})}}>
+          <TouchableOpacity style={styles.confirm} onPress={() => {accountSubtraction(bubs) ; navigation.navigate('SuccessReward', {title})}}>
             <Text style={{fontFamily: 'AsapBold', fontSize: 24, color: '#0037AF'}}>Confirm</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.cancel} onPress={() => {navigation.goBack()}}>

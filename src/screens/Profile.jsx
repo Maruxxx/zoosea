@@ -2,15 +2,14 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import IonIcon from "@expo/vector-icons/Ionicons"
 
-import { db } from '../../firebase';
+import { db, firebase_auth } from '../../firebase';
 import { getDoc, doc } from "firebase/firestore/lite"; 
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-
+import { deleteUser } from 'firebase/auth';
 
 import { ImageBackground } from 'react-native';
-import InternetCheck from '../components/InternetCheck';
 
 const background = require('../../assets/media/bg/background.jpg')
 
@@ -47,15 +46,23 @@ const Profile = ({navigation, route}) => {
   });
 
   async function signOut() {
-    try {
-      GoogleSignin.revokeAccess();
-      auth().signOut();
-    } catch (error) {
-      console.log(error)
+
+    if (user.email != 'zoosea_reviewer@gmail.com') {
+      try {
+        GoogleSignin.revokeAccess();
+        auth().signOut();
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      try {
+        firebase_auth.signOut();
+      } catch(e) {
+        console.log(e)
+      }
     }
   }
 
-  
  
  
   return (
@@ -113,7 +120,6 @@ const Profile = ({navigation, route}) => {
             </TouchableOpacity>
 
         </View>
-        <InternetCheck />
       </ImageBackground>
       
     </View>
